@@ -23,14 +23,17 @@ public class PlayerMove : MonoBehaviour {
 				Debug.Log(keyMap[key]);
 				Const.Stages stage = keyMap[key];
 				Debug.Log(stage);
-				GameObject obj = prevStageObjs.GetComponent<Position>().stageObjs[stage];
+				Position position = prevStageObjs.GetComponent<Position>();
+				GameObject obj = position.stageObjs[stage];
 				if (!obj)
 					return;
 
 				isMove = false;
-				transform.DOMove(obj.transform.position, 1f).SetEase(Ease.InQuint).OnComplete(() => isMove = true);
 				prevStageObjs = obj;
+				transform.DOPath(new Vector3[] { transform.position, obj.transform.position + Vector3.up * 0.5f }, 0.8f, PathType.CatmullRom)
+						 .SetEase(Ease.Linear).OnComplete(() => isMove = true);
 			}
+
 		}
 	}
 }
