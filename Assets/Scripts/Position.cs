@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Position : MonoBehaviour {
 
-	public GameObject northStage;
-	public GameObject southStage;
-	public GameObject westStage;
-	public GameObject eastStage;
+	public GameObject northPath;
+	public GameObject southPath;
+	public GameObject westPath;
+	public GameObject eastPath;
 
-	public Dictionary<Const.Stages, GameObject> stageObjs = new Dictionary<Const.Stages, GameObject>();
+	public Dictionary<Const.Direction, GameObject> dirPathObjs = new Dictionary<Const.Direction, GameObject>();
 
 
 	void Awake() {
-		stageObjs.Add(Const.Stages.north, northStage);
-		stageObjs.Add(Const.Stages.south, southStage);
-		stageObjs.Add(Const.Stages.west, westStage);
-		stageObjs.Add(Const.Stages.east, eastStage);
+		dirPathObjs.Add(Const.Direction.north, northPath);
+		dirPathObjs.Add(Const.Direction.south, southPath);
+		dirPathObjs.Add(Const.Direction.west, westPath);
+		dirPathObjs.Add(Const.Direction.east, eastPath);
 	}
 }
