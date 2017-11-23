@@ -1,5 +1,5 @@
 ﻿public static partial class Const {
-	public enum Stages {
+	public enum Direction {
 		north,
 		east,
 		south,
