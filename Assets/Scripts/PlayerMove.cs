@@ -6,32 +6,32 @@ using DG.Tweening;
 public class PlayerMove : MonoBehaviour {
 
 	public GameObject prevStageObjs;
-	Dictionary<KeyCode, Const.Stages> keyMap = new Dictionary<KeyCode, Const.Stages>() {
-		{KeyCode.UpArrow, Const.Stages.north},
-		{KeyCode.LeftArrow, Const.Stages.west},
-		{KeyCode.DownArrow, Const.Stages.south},
-		{KeyCode.RightArrow, Const.Stages.east}
+	Dictionary<KeyCode, Const.Direction> keyDirDictionary = new Dictionary<KeyCode, Const.Direction>() {
+		{KeyCode.UpArrow, Const.Direction.north},
+		{KeyCode.LeftArrow, Const.Direction.west},
+		{KeyCode.DownArrow, Const.Direction.south},
+		{KeyCode.RightArrow, Const.Direction.east}
 	};
 
 	bool isMove = true;
 
 	private void Update() {
-		foreach (KeyCode key in keyMap.Keys) {
+		foreach (KeyCode key in keyDirDictionary.Keys) {
 
 			if (Input.GetKeyDown(key) && isMove) {
-				Debug.Log(key);
-				Debug.Log(keyMap[key]);
-				Const.Stages stage = keyMap[key];
-				Debug.Log(stage);
+				Const.Direction direction = keyDirDictionary[key];
 				Position position = prevStageObjs.GetComponent<Position>();
-				GameObject obj = position.stageObjs[stage];
-				if (!obj)
+				GameObject pathObj = position.dirPathObjs[direction];
+				if (!pathObj)
+					return;
+				Path path = pathObj.GetComponent<Path>();
+				if (!path)
 					return;
 
 				isMove = false;
-				prevStageObjs = obj;
-				transform.DOPath(new Vector3[] { transform.position, obj.transform.position + Vector3.up * 0.5f }, 0.8f, PathType.CatmullRom)
+				transform.DOPath(path.GetPath(prevStageObjs.transform), 0.8f, PathType.CatmullRom)
 						 .SetEase(Ease.Linear).OnComplete(() => isMove = true);
+				prevStageObjs = path.GetEndPosition(prevStageObjs.transform);
 			}
 
 		}
